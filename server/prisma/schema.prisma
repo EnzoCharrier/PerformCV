@@ -1,0 +1,124 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum Role {
+  ETUDIANT
+  ADMIN
+}
+
+enum StatutRecherche {
+  ENVOYEE
+  RELANCEE
+  ENTRETIEN
+  ACCEPTEE
+  REFUSEE
+}
+
+model Utilisateur {
+  id         Int       @id @default(autoincrement())
+  nom        String    @db.VarChar(100)
+  prenom     String    @db.VarChar(100)
+  email      String    @unique @db.VarChar(150)
+  motDePasse String    @db.VarChar(255) // hash bcrypt, jamais en clair
+  role       Role      @default(ETUDIANT)
+  classe     String?   @db.VarChar(50)  // étudiants uniquement
+  anneeBTS   Int?                       // 1 ou 2
+  service    String?   @db.VarChar(100) // admins uniquement
+  createdAt  DateTime  @default(now())
+
+  cvs           CV[]
+  commentaires  Commentaire[]
+  recherches    RechercheStage[]
+}
+
+model Modele {
+  id     Int     @id @default(autoincrement())
+  nom    String  @db.VarChar(100)
+  apercu String? @db.VarChar(255)
+  cvs    CV[]
+}
+
+model CV {
+  id               Int      @id @default(autoincrement())
+  titre            String   @db.VarChar(150)
+  dateCreation     DateTime @default(now())
+  dateModification DateTime @updatedAt
+  visible          Boolean  @default(false) // apparaît dans la page des CV filtrables
+  idEtudiant       Int
+  idModele         Int?
+
+  etudiant     Utilisateur   @relation(fields: [idEtudiant], references: [id], onDelete: Cascade)
+  modele       Modele?       @relation(fields: [idModele], references: [id], onDelete: SetNull)
+  experiences  Experience[]
+  formations   Formation[]
+  competences  Competence[]
+  commentaires Commentaire[]
+
+  @@index([idEtudiant])
+  @@index([idModele])
+}
+
+model Experience {
+  id          Int       @id @default(autoincrement())
+  poste       String    @db.VarChar(100)
+  entreprise  String    @db.VarChar(100)
+  dateDebut   DateTime  @db.Date
+  dateFin     DateTime? @db.Date
+  description String?   @db.Text
+  idCV        Int
+  cv          CV        @relation(fields: [idCV], references: [id], onDelete: Cascade)
+
+  @@index([idCV])
+}
+
+model Formation {
+  id            Int     @id @default(autoincrement())
+  diplome       String  @db.VarChar(150)
+  etablissement String  @db.VarChar(150)
+  anneeObtention Int?
+  idCV          Int
+  cv            CV      @relation(fields: [idCV], references: [id], onDelete: Cascade)
+
+  @@index([idCV])
+}
+
+model Competence {
+  id     Int     @id @default(autoincrement())
+  nom    String  @db.VarChar(100)
+  niveau String? @db.VarChar(50)
+  idCV   Int
+  cv     CV      @relation(fields: [idCV], references: [id], onDelete: Cascade)
+
+  @@index([idCV])
+}
+
+model Commentaire {
+  id               Int         @id @default(autoincrement())
+  contenu          String      @db.Text
+  dateAjout        DateTime    @default(now())
+  idAdministrateur Int
+  idCV             Int
+  administrateur   Utilisateur @relation(fields: [idAdministrateur], references: [id], onDelete: Cascade)
+  cv               CV          @relation(fields: [idCV], references: [id], onDelete: Cascade)
+
+  @@index([idAdministrateur])
+  @@index([idCV])
+}
+
+model RechercheStage {
+  id         Int             @id @default(autoincrement())
+  entreprise String          @db.VarChar(150)
+  poste      String?         @db.VarChar(150)
+  dateEnvoi  DateTime        @default(now()) @db.Date
+  statut     StatutRecherche @default(ENVOYEE)
+  notes      String?         @db.Text
+  idEtudiant Int
+  etudiant   Utilisateur     @relation(fields: [idEtudiant], references: [id], onDelete: Cascade)
+
+  @@index([idEtudiant])
+}
