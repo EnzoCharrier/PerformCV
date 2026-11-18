@@ -1,13 +1,26 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="./public/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>performcv</title>
+    <script>
+  try {
+    var t = localStorage.getItem("theme");
+    if (!t) {
+      t = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+    }
+    document.documentElement.dataset.theme = t;
+  } catch {
+    // localStorage peut être indisponible (navigation privée, cookies bloqués) :
+    // on garde alors le thème par défaut défini dans le CSS.
+  }
+</script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
   </body>
 </html>

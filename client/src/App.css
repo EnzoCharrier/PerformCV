@@ -1,41 +1,257 @@
+/* ==========================================================================
+   Variables : thème sombre (par défaut)
+   ========================================================================== */
 :root {
-  /* Thème clair */
-  --bg-primary: #FFFFFF;
-  --bg-secondary: #F8F7FA;
-  --bg-card: #FFFFFF;
-  --bg-elevated: #F1EEF6;
- 
-  --text-primary: #17141D;
-  --text-secondary: #625D6C;
-  --text-disabled: #9993A3;
- 
-  --border: #E5E0ED;
- 
+  color-scheme: dark;
+
+  --bg-primary: #09090B;
+  --bg-secondary: #111114;
+  --bg-card: #17171C;
+  --bg-elevated: #202027;
+
+  --text-primary: #FFFFFF;
+  --text-secondary: #B4B1BE;
+  --text-disabled: #777481;
+
+  --border: #303039;
+
   --primary: #7927F5;
-  --primary-hover: #6819DF;
-  --primary-active: #5410BD;
-  --primary-subtle: #F0E8FF;
- 
+  --primary-hover: #914DFF;
+  --primary-active: #6419D9;
+  --primary-subtle: #29154A;
+  --on-primary: #FFFFFF; /* texte sur fond violet, identique dans les 2 thèmes */
+
   --success: #16A36A;
   --warning: #E5A000;
   --error: #E5484D;
   --info: #3685E8;
 }
- 
-[data-theme="dark"] {
-  --bg-primary: #09090B;
-  --bg-secondary: #111114;
-  --bg-card: #17171C;
-  --bg-elevated: #202027;
- 
-  --text-primary: #FFFFFF;
-  --text-secondary: #B4B1BE;
-  --text-disabled: #777481;
- 
-  --border: #303039;
- 
+
+/* ==========================================================================
+   Variables : thème clair
+   ========================================================================== */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8F7FA;
+  --bg-card: #FFFFFF;
+  --bg-elevated: #F1EEF6;
+
+  --text-primary: #17141D;
+  --text-secondary: #625D6C;
+  --text-disabled: #9993A3;
+
+  --border: #E5E0ED;
+
   --primary: #7927F5;
-  --primary-hover: #914DFF;
-  --primary-active: #6419D9;
-  --primary-subtle: #29154A;
+  --primary-hover: #6819DF;
+  --primary-active: #5410BD;
+  --primary-subtle: #F0E8FF;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  margin: 5px;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ==========================================================================
+   Navigation
+   ========================================================================== */
+nav {
+  background-color: var(--bg-secondary);
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.3s ease;
+}
+
+nav a {
+  position: relative;
+  color: var(--text-primary);
+  text-decoration: none;
+  border-radius: 5px;
+  padding: 0.5rem 0.25rem;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--primary-hover);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+nav a:hover::after,
+nav a:focus-visible::after,
+nav a[aria-current="page"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ==========================================================================
+   Bouton de changement de thème
+   ========================================================================== */
+.theme-toggle {
+  margin-left: auto; /* pousse le bouton à droite de la nav */
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  background: var(--bg-elevated);
+}
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.15;
+  margin: 0 0 1rem;
+}
+
+.hero__text {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  margin: 0 0 2rem;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.hero__visual {
+  margin: 0;
+}
+
+.hero__visual img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+/* ==========================================================================
+   Boutons
+   ========================================================================== */
+.btn {
+  display: inline-block;
+  padding: 0.85rem 1.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn--primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 2px solid var(--primary);
+}
+
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.btn--primary:active {
+  background: var(--primary-active);
+  border-color: var(--primary-active);
+}
+
+.btn--secondary {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+
+.btn--secondary:hover,
+.btn--secondary:focus-visible {
+  background: var(--primary-subtle);
+}
+
+/* Contour de focus visible pour la navigation au clavier */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--primary-hover);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 768px) {
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 2.5rem 1rem;
+  }
+
+  .hero__actions {
+    justify-content: center;
+  }
+}
+
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  margin-right: 1rem;
+}
+.nav__divider {
+  width: 1px;
+  height: 1.5rem;
+  background: var(--text-primary);
+  opacity: 0.4;
+  margin: 0 0.5rem;
+}
+
+/* ==========================================================================
+   Accessibilité : réduction des animations (un seul bloc, en dernier)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  body,
+  nav,
+  nav a::after,
+  .theme-toggle,
+  .btn {
+    transition: none;
+  }
 }
