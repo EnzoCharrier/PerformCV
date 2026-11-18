@@ -34,4 +34,3 @@ Le site tourne sur http://localhost:5173
 ## Organisation du travail
 - `main` : version stable
 - `dev` : développement en cours
-- une branche par fonctionnalité : `feature/nom`
