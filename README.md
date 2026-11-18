@@ -17,7 +17,7 @@ React (Vite) · Node.js / Express · Prisma · MariaDB
 cd server
 npm install
 ```
-Ouvrez `.env` et renseignez la connexion à la base. Puis :
+Créer un `.env` et renseignez la connexion à la base donnée. Puis :
 ```
 npx prisma7 generate
 npm run dev
