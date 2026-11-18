@@ -12,6 +12,7 @@ React (Vite) · Node.js / Express · Prisma · MariaDB
 ## Installation
 
 ### Serveur
+- A faire dans un invite de commande(pas Powershell)
 ```
 cd server
 npm install
